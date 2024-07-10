@@ -1,0 +1,15 @@
+<div>
+    <h1>Artists</h1>
+    @if (artists.length === 0) {
+        <div class="row" >
+        <h3>No artists</h3>
+        </div>
+    }
+    <mat-nav-list>
+        @for (artist of artists; track artist._id) {
+            <a mat-list-item class="list-item" routerLink="/artists/{{artist._id}}" routerLinkActive="active" >
+                <span matListItemTitle [ngClass]="'list-item-name'">{{artist.name}}</span>
+            </a>
+        }
+    </mat-nav-list>
+</div>
