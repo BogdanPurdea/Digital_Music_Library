@@ -5,6 +5,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Album } from '../models/album';
 
 @Component({
   selector: 'app-artist-list',
@@ -16,6 +17,7 @@ import { CommonModule } from '@angular/common';
 export class ArtistListComponent implements OnInit{
   
   artists: Artist[] = [];
+  selectedArtistId: string | null = null;
 
   constructor(private artistService: ArtistService ) {}
 
@@ -24,9 +26,17 @@ export class ArtistListComponent implements OnInit{
   }
 
   loadArtists(): void {
-    this.artistService.getArtist().subscribe({
+    this.artistService.getArtists().subscribe({
       next: (artists) => this.artists = artists,
       error: (error) => console.error("Error loading artists", error)
     });
+  }
+
+  selectArtist(artistId: string): void {
+    if(this.selectedArtistId === artistId) {
+      this.selectedArtistId = null;
+    }
+    else
+      this.selectedArtistId = artistId;
   }
 }
