@@ -1,3 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 html, body { height: 100%; }
 body { margin: 20px; font-family: Roboto, "Helvetica Neue", sans-serif; }
+h1 {
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.list-item {
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0, 0, 0);
+    margin-bottom: 10px;
+    padding: 10px;
+    height: auto !important;
+}
+
+.list-item-name {
+    font-size: 18px;
+    margin: 0;
+}

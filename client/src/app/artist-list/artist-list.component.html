@@ -7,28 +7,12 @@
     }
     <mat-nav-list>
         @for (artist of artists; track artist._id) {
-        <div (click)="selectArtist(artist._id)">
-            <a mat-list-item class="list-item">
-                <span matListItemTitle [ngClass]="'list-item-name'">{{artist.name}}</span>
-            </a>
-            <div [hidden]="selectedArtistId != artist._id ? true : null">
-                <h2>Albums</h2>
-                <ul>
-                    @for (album of artist.albums; track album._id) {
-                    <li>
-                        <strong>{{ album.title }}</strong>
-                        <ul>
-                            @for (song of album.songs; track song._id) {
-                            <li>
-                                {{ song.title }} ({{ song.length }})
-                            </li>
-                            }
-                        </ul>
-                    </li>
-                    }
-                </ul>
+            <mat-list-item mat-list-item class="list-item" (click)="selectArtist(artist)">
+                <span matListItemTitle class="list-item-name">{{artist.name}}</span>
+            </mat-list-item>
+            <div [hidden]="selectedArtist != artist ? true : null">
+                <app-album-list [artist]="selectedArtist!"></app-album-list>
             </div>
-        </div>
         }
     </mat-nav-list>
 </div>

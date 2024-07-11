@@ -1,0 +1,7 @@
+<mat-nav-list>
+    @for (song of songs; track song._id) {
+        <a mat-list-item class="list-item">
+            <span matListItemTitle class="list-item-name">{{song.title}} {{song.length}}</span>
+        </a>
+    }
+</mat-nav-list>

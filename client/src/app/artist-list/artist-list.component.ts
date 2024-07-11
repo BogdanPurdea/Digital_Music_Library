@@ -2,22 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { Artist } from '../models/artist';
 import { ArtistService } from '../services/artist.service';
 import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Album } from '../models/album';
+import { AlbumListComponent } from '../album-list/album-list.component';
 
 @Component({
   selector: 'app-artist-list',
   standalone: true,
-  imports: [RouterModule, CommonModule, MatListModule, MatIconModule],
+  imports: [RouterModule, CommonModule, MatListModule, AlbumListComponent],
   templateUrl: './artist-list.component.html',
   styleUrl: './artist-list.component.css'
 })
 export class ArtistListComponent implements OnInit{
   
   artists: Artist[] = [];
-  selectedArtistId: string | null = null;
+  selectedArtist: Artist | null = null;
 
   constructor(private artistService: ArtistService ) {}
 
@@ -32,11 +31,11 @@ export class ArtistListComponent implements OnInit{
     });
   }
 
-  selectArtist(artistId: string): void {
-    if(this.selectedArtistId === artistId) {
-      this.selectedArtistId = null;
+  selectArtist(artist: Artist): void {
+    if(this.selectedArtist === artist) {
+      this.selectedArtist = null;
     }
     else
-      this.selectedArtistId = artistId;
+      this.selectedArtist = artist;
   }
 }

@@ -1,0 +1,16 @@
+
+.list-item {
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0, 0, 0);
+    margin: 8px;
+    padding: 8px;
+    margin-left: 50px;
+    width: auto;
+    height: auto !important;
+}
+
+.list-item-name {
+    font-size: 14px;
+    margin: 0;
+}
