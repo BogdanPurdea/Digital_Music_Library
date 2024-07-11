@@ -1,0 +1,15 @@
+<form [formGroup]="albumForm" (ngSubmit)="onSubmit()">
+    <div>
+        <h3>Add a new album</h3>
+        <label for="title">Title: </label>
+        <input id="title" formControlName="title">
+        <label for="description">Description: </label>
+        <input id="description" formControlName="description">
+        @if (albumForm.get('title')!.invalid && (albumForm.get('title')!.dirty || albumForm.get('title')!.touched)){
+            <p>
+                Title is required.
+            </p>
+        }
+        <button type="submit" [disabled]="albumForm.invalid">Create</button>
+      </div>
+</form>

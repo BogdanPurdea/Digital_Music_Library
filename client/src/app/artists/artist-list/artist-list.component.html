@@ -1,5 +1,8 @@
 <div>
-    <h1>Artists</h1>
+    <h1>Digital music library</h1>
+
+    <app-artist-form></app-artist-form>
+
     @if (artists.length === 0) {
     <div>
         <h3>No artists</h3>
@@ -8,9 +11,13 @@
     <mat-nav-list>
         @for (artist of artists; track artist._id) {
             <mat-list-item mat-list-item class="list-item" (click)="selectArtist(artist)">
-                <span matListItemTitle class="list-item-name">{{artist.name}}</span>
+                <span matListItemTitle class="list-item-name">{{artist.name}}
+                    <button class="deletebtn" (click)="deleteArtist(artist._id)">Delete</button>
+                </span>
             </mat-list-item>
+            
             <div [hidden]="selectedArtist != artist ? true : null">
+                <app-album-form [artist]="selectedArtist!"></app-album-form>
                 <app-album-list [artist]="selectedArtist!"></app-album-list>
             </div>
         }

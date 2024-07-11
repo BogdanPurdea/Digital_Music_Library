@@ -13,4 +13,12 @@
 .list-item-name {
     font-size: 14px;
     margin: 0;
+    display: flex;
+    justify-content: flex-end; /* Aligns items to the right */
+    width: 100%;
+}
+
+.deletebtn {
+    margin-left: auto;
+    color: #f44336;;
 }

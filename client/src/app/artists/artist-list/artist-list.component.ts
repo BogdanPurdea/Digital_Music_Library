@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Artist } from '../models/artist';
-import { ArtistService } from '../services/artist.service';
+import { Artist } from '../../models/artist';
+import { ArtistService } from '../../services/artist.service';
 import { MatListModule } from '@angular/material/list';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AlbumListComponent } from '../album-list/album-list.component';
+import { AlbumListComponent } from '../../albums/album-list/album-list.component';
+import { ArtistFormComponent } from '../artist-form/artist-form.component';
+import { AlbumFormComponent } from '../../albums/album-form/album-form.component';
 
 @Component({
   selector: 'app-artist-list',
   standalone: true,
-  imports: [RouterModule, CommonModule, MatListModule, AlbumListComponent],
+  imports: [RouterModule, CommonModule, MatListModule, AlbumListComponent, ArtistFormComponent, AlbumFormComponent],
   templateUrl: './artist-list.component.html',
   styleUrl: './artist-list.component.css'
 })
@@ -35,7 +37,14 @@ export class ArtistListComponent implements OnInit{
     if(this.selectedArtist === artist) {
       this.selectedArtist = null;
     }
-    else
+    else 
       this.selectedArtist = artist;
+  }
+
+  deleteArtist(artistId: string): void {
+    this.artistService.deleteArtist(artistId).subscribe({
+      next: () => this.loadArtists(),
+      error: (error) => console.error("Error deleting artist", error)
+    })
   }
 }

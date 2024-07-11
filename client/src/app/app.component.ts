@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ArtistListComponent } from './artist-list/artist-list.component';
+import { ArtistListComponent } from './artists/artist-list/artist-list.component';
 
 @Component({
   selector: 'app-root',
