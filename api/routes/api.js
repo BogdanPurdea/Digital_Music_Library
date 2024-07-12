@@ -1,6 +1,10 @@
 var express = require('express');
 var router = express.Router();
 const apiController = require('../controllers/apiController');
+const searchController = require('../controllers/searchController');
+
+//Search route
+router.get('/search', searchController.searchArtists);
 
 // Artist routes
 router.get('/', apiController.getArtists);

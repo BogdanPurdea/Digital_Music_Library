@@ -129,5 +129,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+.vscode
 api/data/dbConfig.json
 api/data/data.json
+api/node_modules
