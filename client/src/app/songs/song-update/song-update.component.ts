@@ -5,6 +5,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SongService } from '../../services/song.service';
+import { SharedService } from '../../services/shared.service';
+import { Artist } from '../../models/artist';
+import { Album } from '../../models/album';
 
 @Component({
   selector: 'app-song-update',
@@ -15,12 +18,12 @@ import { SongService } from '../../services/song.service';
 })
 export class SongUpdateComponent implements OnChanges {
   songForm!: FormGroup;
-  @Input() artistId: string | null = null;
-  @Input() albumId: string | null = null;
+  @Input() artist: Artist | null = null;
+  @Input() album: Album | null = null;
   @Input() songId: string | null = null;
 
-  constructor(private formBuilder: FormBuilder, private songService: SongService,
-    private route: ActivatedRoute, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private songService: SongService, 
+    private sharedService: SharedService) { }
 
   ngOnChanges(): void {
     this.initializeFormGroup();
@@ -35,8 +38,8 @@ export class SongUpdateComponent implements OnChanges {
     if (this.songForm.valid) {
       const formData = { ...this.songForm.value };
       // Update song
-      this.songService.updateSong(this.artistId!, this.albumId!, this.songId!, formData).subscribe({
-        next: () => this.router.navigate([this.router.url]),
+      this.songService.updateSong(this.artist!._id, this.album!._id, this.songId!, formData).subscribe({
+        next: () => this.sharedService.notify(this.artist, this.album),
         error: (error) => console.error('Error creating album', error)}
       );
     }

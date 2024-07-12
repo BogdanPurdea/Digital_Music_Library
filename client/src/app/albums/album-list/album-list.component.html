@@ -10,9 +10,9 @@
         <span matLine class="list-item-description">{{album.description}}</span>
     </mat-list-item>
     <div [hidden]="selectedAlbum != album? true : null">
-        <app-song-create [album]="selectedAlbum!" [artistId]="artist?._id!"></app-song-create>
-        <app-album-update [albumId]="album._id" [artistId]="artist?._id!"></app-album-update>
-        <app-song-list [album]="selectedAlbum!" [artistId]="artist?._id!"></app-song-list>
+        <app-song-create [album]="selectedAlbum!" [artist]="artist"></app-song-create>
+        <app-album-update [albumId]="album._id" [artist]="artist"></app-album-update>
+        <app-song-list [album]="selectedAlbum!" [artist]="artist"></app-song-list>
     </div>
     }
 </mat-nav-list>

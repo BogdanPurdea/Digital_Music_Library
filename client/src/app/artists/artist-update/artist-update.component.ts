@@ -5,6 +5,7 @@ import { ArtistService } from '../../services/artist.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-artist-update',
@@ -18,7 +19,7 @@ export class ArtistUpdateComponent implements OnInit{
   @Input() artistId: string | null = null;
 
   constructor(private formBuilder: FormBuilder, private artistService: ArtistService,
-    private route: ActivatedRoute, private router: Router) { }
+    private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.initializeFormGroup();
@@ -33,7 +34,7 @@ export class ArtistUpdateComponent implements OnInit{
       const formData = { ...this.artistForm.value };
       // Update artist
       this.artistService.updateArtist(this.artistId!, formData).subscribe({
-        next: () => this.router.navigate([this.router.url]),
+        next: () => this.sharedService.notify(null, null),
         error: (error) => console.error('Error creating artist', error)}
       );
     }

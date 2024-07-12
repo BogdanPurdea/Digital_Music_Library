@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Artist } from '../../models/artist';
 import { ArtistService } from '../../services/artist.service';
 import { MatListModule } from '@angular/material/list';
@@ -10,6 +10,8 @@ import { AlbumCreateComponent } from '../../albums/album-create/album-create.com
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { ArtistUpdateComponent } from '../artist-update/artist-update.component';
+import { Subscription } from 'rxjs';
+import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-artist-list',
@@ -19,15 +21,29 @@ import { ArtistUpdateComponent } from '../artist-update/artist-update.component'
   templateUrl: './artist-list.component.html',
   styleUrl: './artist-list.component.css'
 })
-export class ArtistListComponent implements OnInit{
+export class ArtistListComponent implements OnInit, OnDestroy {
   
   artists: Artist[] = [];
   selectedArtist: Artist | null = null;
+  submittedSubscription!: Subscription;
 
-  constructor(private artistService: ArtistService ) {}
+  constructor(private artistService: ArtistService, private sharedService: SharedService) {}
 
   ngOnInit(): void {
     this.loadArtists();
+    // Subscribe to submitted event
+    this.submittedSubscription = this.sharedService.submitted$.subscribe((submittedData) => {
+      this.selectedArtist = null;
+      this.loadArtists();
+      this.selectArtist(submittedData.selectedArtist);
+      console.log(this.selectedArtist);
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.submittedSubscription) {
+      this.submittedSubscription.unsubscribe();
+    }
   }
 
   loadArtists(): void {
@@ -37,7 +53,7 @@ export class ArtistListComponent implements OnInit{
     });
   }
 
-  selectArtist(artist: Artist): void {
+  selectArtist(artist: Artist | null): void {
     if(this.selectedArtist === artist) {
       this.selectedArtist = null;
     }

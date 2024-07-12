@@ -5,6 +5,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlbumService } from '../../services/album.service';
+import { SharedService } from '../../services/shared.service';
+import { Artist } from '../../models/artist';
 
 @Component({
   selector: 'app-album-update',
@@ -15,11 +17,11 @@ import { AlbumService } from '../../services/album.service';
 })
 export class AlbumUpdateComponent implements OnChanges{
   albumForm!: FormGroup;
-  @Input() artistId: string | null = null;
+  @Input() artist: Artist | null = null;
   @Input() albumId: string | null = null;
 
   constructor(private formBuilder: FormBuilder, private albumService: AlbumService,
-    private route: ActivatedRoute, private router: Router) { }
+    private sharedService: SharedService) { }
 
   ngOnChanges(): void {
     this.initializeFormGroup();
@@ -35,8 +37,8 @@ export class AlbumUpdateComponent implements OnChanges{
     if (this.albumForm.valid) {
       const formData = { ...this.albumForm.value };
       //Update album
-      this.albumService.updateAlbum(this.artistId!, this.albumId!, formData).subscribe({
-        next: () => this.router.navigate([this.route.url]),
+      this.albumService.updateAlbum(this.artist?._id!, this.albumId!, formData).subscribe({
+        next: () => this.sharedService.notify(this.artist, null),
         error: (error) => console.error('Error creating album', error)}
       );
     }

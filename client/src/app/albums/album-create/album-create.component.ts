@@ -6,6 +6,7 @@ import { Artist } from '../../models/artist';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-album-create',
@@ -19,7 +20,7 @@ export class AlbumCreateComponent implements OnChanges {
   @Input() artist: Artist | null = null;
 
   constructor(private formBuilder: FormBuilder, private albumService: AlbumService,
-    private route: ActivatedRoute, private router: Router) { }
+    private sharedService: SharedService) { }
 
   ngOnChanges(): void {
     this.initializeFormGroup();
@@ -36,7 +37,7 @@ export class AlbumCreateComponent implements OnChanges {
       const formData = { ...this.albumForm.value };
       // Create new album
       this.albumService.addAlbum(this.artist?._id!, formData).subscribe({
-        next: () => this.router.navigate([this.route]),
+        next: () => this.sharedService.notify(this.artist!, null),
         error: (error) => console.error('Error creating album', error)}
       );
     }

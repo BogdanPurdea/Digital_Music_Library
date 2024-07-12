@@ -8,6 +8,6 @@
             <button mat-raised-button color="warn" class="deletebtn" (click)="deleteSong(song._id)">Delete</button>
         </span>
     </a>
-    <app-song-update [songId]="song._id" [albumId]="album?._id!" [artistId]="artistId"></app-song-update>
+    <app-song-update [songId]="song._id" [album]="album" [artist]="artist"></app-song-update>
     }
 </mat-nav-list>
