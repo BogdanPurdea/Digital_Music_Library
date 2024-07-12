@@ -1,17 +1,17 @@
 import { Component, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Album } from '../../models/album';
 import { AlbumService } from '../../services/album.service';
-import { ArtistService } from '../../services/artist.service';
 import { MatListModule } from '@angular/material/list';
 import { Artist } from '../../models/artist';
 import { SongListComponent } from '../../songs/song-list/song-list.component';
-import { AlbumFormComponent } from "../album-form/album-form.component";
-import { SongFormComponent } from '../../songs/song-form/song-form.component';
+import { SongCreateComponent } from '../../songs/song-create/song-create.component';
+import { MatButtonModule } from '@angular/material/button';
+import { AlbumUpdateComponent } from '../album-update/album-update.component';
 
 @Component({
   selector: 'app-album-list',
   standalone: true,
-  imports: [MatListModule, SongListComponent, SongFormComponent],
+  imports: [MatListModule, SongListComponent, SongCreateComponent, MatButtonModule, AlbumUpdateComponent],
   templateUrl: './album-list.component.html',
   styleUrl: './album-list.component.css'
 })

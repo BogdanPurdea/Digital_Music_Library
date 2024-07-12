@@ -18,7 +18,12 @@
     width: 100%;
 }
 
+.item-name {
+    padding-top: 6px;
+}
+
 .deletebtn {
     margin-left: auto;
-    color: #f44336;;
+    border-color: rgb(0, 0, 0);
+    border-width: 1px;
 }

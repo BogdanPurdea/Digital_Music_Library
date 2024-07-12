@@ -1,0 +1,23 @@
+<form class="form-group" [formGroup]="songForm" (ngSubmit)="onSubmit()">
+    <div>
+        <h3>Update song</h3>
+        <mat-form-field>
+            <input matInput placeholder="Title" id="title" formControlName="title">
+        </mat-form-field> 
+        <!-- @if (songForm.get('title')!.invalid && (songForm.get('title')!.dirty || songForm.get('title')!.touched)){
+        <p>
+            Title is required.
+        </p>
+        } -->
+        <mat-form-field>
+            <input matInput placeholder="Length" id="length" formControlName="length">
+        </mat-form-field>
+        <!-- @if (songForm.get('length')!.invalid && (songForm.get('length')!.dirty || songForm.get('length')!.touched)){
+        <p>
+            Length is required.
+        </p>
+        } -->
+        <button mat-raised-button color="primary" class="submit" type="submit"
+            [disabled]="songForm.invalid">Update</button>
+    </div>
+</form>

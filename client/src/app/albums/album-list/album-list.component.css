@@ -18,11 +18,14 @@
     width: 100%;
 }
 
+.item-name {
+    padding-top: 6px;
+}
+
 .list-item-description {
     white-space: normal;
 }
 
 .deletebtn {
     margin-left: auto;
-    color: #f44336;;
 }

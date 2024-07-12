@@ -1,0 +1,18 @@
+<form class="form-group" [formGroup]="albumForm" (ngSubmit)="onSubmit()">
+    <div>
+        <h3>Update album</h3>
+        <mat-form-field>
+            <input matInput placeholder="Title" id="title" formControlName="title" required>
+        </mat-form-field>
+        <!-- @if (albumForm.get('title')!.invalid && (albumForm.get('title')!.dirty || albumForm.get('title')!.touched)){
+            <p>
+                Title is required.
+            </p>
+            } -->
+        <mat-form-field>
+            <input matInput placeholder="Description" id="description" formControlName="description">
+        </mat-form-field>
+        <button mat-raised-button color="primary" class="submit" type="submit"
+            [disabled]="albumForm.invalid">Update</button>
+    </div>
+</form>

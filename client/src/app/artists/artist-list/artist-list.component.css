@@ -8,6 +8,7 @@ h1 {
     border-width: 1px;
     border-color: rgb(0, 0, 0);
     margin-bottom: 10px;
+    margin-left: 10px;
     padding: 10px;
     height: auto !important;
 }
@@ -20,7 +21,10 @@ h1 {
     width: 100%;
 }
 
+.item-name {
+    padding-top: 6px;
+}
+
 .deletebtn {
     margin-left: auto;
-    color: #f44336;;
 }

@@ -4,12 +4,14 @@ import { ArtistService } from '../../services/artist.service';
 import { Album } from '../../models/album';
 import { MatListItem, MatListModule } from '@angular/material/list';
 import { SongService } from '../../services/song.service';
-import { SongFormComponent } from '../song-form/song-form.component';
+import { SongCreateComponent } from '../song-create/song-create.component';
+import { MatButtonModule } from '@angular/material/button';
+import { SongUpdateComponent } from '../song-update/song-update.component';
 
 @Component({
   selector: 'app-song-list',
   standalone: true,
-  imports: [MatListModule, SongFormComponent],
+  imports: [MatListModule, SongCreateComponent, MatButtonModule, SongUpdateComponent],
   templateUrl: './song-list.component.html',
   styleUrl: './song-list.component.css'
 })

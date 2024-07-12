@@ -1,0 +1,14 @@
+<form class="form-group" [formGroup]="artistForm" (ngSubmit)="onSubmit()">
+    <div>
+        <h3>Update artist/band</h3>
+        <mat-form-field>
+            <input matInput placeholder="Name" id="name" formControlName="name" required="">
+        </mat-form-field>
+        <!-- @if (artistForm.get('name')!.invalid && (artistForm.get('name')!.dirty || artistForm.get('name')!.touched)){
+            <div>
+                Name is required.
+            </div>
+        } -->
+        <button mat-raised-button color="primary"  class="submit" type="submit" [disabled]="artistForm.invalid">Update</button>
+      </div>
+</form>

@@ -5,13 +5,17 @@ import { MatListModule } from '@angular/material/list';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AlbumListComponent } from '../../albums/album-list/album-list.component';
-import { ArtistFormComponent } from '../artist-form/artist-form.component';
-import { AlbumFormComponent } from '../../albums/album-form/album-form.component';
+import { ArtistCreateComponent } from '../artist-create/artist-create.component';
+import { AlbumCreateComponent } from '../../albums/album-create/album-create.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { ArtistUpdateComponent } from '../artist-update/artist-update.component';
 
 @Component({
   selector: 'app-artist-list',
   standalone: true,
-  imports: [RouterModule, CommonModule, MatListModule, AlbumListComponent, ArtistFormComponent, AlbumFormComponent],
+  imports: [RouterModule, CommonModule, MatListModule, AlbumListComponent, ArtistCreateComponent, 
+    AlbumCreateComponent, MatButtonModule, MatCardModule, ArtistUpdateComponent],
   templateUrl: './artist-list.component.html',
   styleUrl: './artist-list.component.css'
 })
