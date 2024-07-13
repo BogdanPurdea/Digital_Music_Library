@@ -19,7 +19,11 @@
 }
 
 .item-name {
-    padding-top: 6px;
+    padding: 6px;
+}
+
+.toggle {
+    margin-left: 60px;
 }
 
 .deletebtn {

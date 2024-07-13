@@ -9,11 +9,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { AlbumUpdateComponent } from '../album-update/album-update.component';
 import { SharedService } from '../../services/shared.service';
 import { Subscription } from 'rxjs';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-album-list',
   standalone: true,
-  imports: [MatListModule, SongListComponent, SongCreateComponent, MatButtonModule, AlbumUpdateComponent],
+  imports: [MatListModule, SongListComponent, SongCreateComponent, 
+    MatButtonModule, AlbumUpdateComponent, MatSlideToggleModule],
   templateUrl: './album-list.component.html',
   styleUrl: './album-list.component.css'
 })
@@ -23,6 +25,8 @@ export class AlbumListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() artist: Artist | null = null;
   selectedAlbum: Album | null = null;
   submittedSubscription!: Subscription;
+  showCreateForm = false;
+  showUpdateForm = false;
 
   constructor(private albumService: AlbumService, private sharedService: SharedService) { }
 
@@ -42,6 +46,16 @@ export class AlbumListComponent implements OnInit, OnChanges, OnDestroy {
     if (this.submittedSubscription) {
       this.submittedSubscription.unsubscribe();
     }
+  }
+
+  toggleCreateForm() {
+    this.showCreateForm = !this.showCreateForm;
+    this.showUpdateForm = false;
+  }
+
+  toggleUpdateForm() {
+    this.showUpdateForm = !this.showUpdateForm;
+    this.showCreateForm = false; 
   }
 
   loadAlbums(): void {

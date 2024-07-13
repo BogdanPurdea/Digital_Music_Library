@@ -1,14 +1,23 @@
 <div>
     <h1>Digital music library</h1>
 
-    <div>
-        <app-artist-create></app-artist-create>
-        <input [formControl]="searchControl" placeholder="Search for artists, albums or songs">
-    </div>
+    <mat-slide-toggle class="toggle-artist-create" [checked]="showCreateArtistForm" (change)="toggleCreateArtistForm()">
+        Add artist/band
+    </mat-slide-toggle>
+    @if (showCreateArtistForm) {
+    <app-artist-create></app-artist-create>
+    }
+
+    <input [formControl]="searchControl" placeholder="Search for artists, albums or songs" [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let artist of artists" [value]="artist.name">
+          {{ artist.name }}
+        </mat-option>
+    </mat-autocomplete>
 
     @if (artists.length === 0) {
-    <div>
-        <h3>No artists</h3>
+    <div class="list-empty">
+        <h3>No matching entries</h3>
     </div>
     }
     <mat-nav-list>
@@ -18,14 +27,26 @@
                 <div class="item-name">
                     {{artist.name}}
                 </div>
+                
                 <button mat-raised-button color="warn" class="deletebtn"
-                    (click)="deleteArtist(artist._id)">Delete</button>
+                    (click)="deleteArtist(artist._id)">Delete
+                </button>
             </span>
         </mat-list-item>
 
         <div [hidden]="selectedArtist != artist ? true : null">
+            <mat-slide-toggle class="toggle-album-create" [checked]="showCreateAlbumForm" (change)="toggleCreateAlbumForm()">
+                Add album
+            </mat-slide-toggle>
+            <mat-slide-toggle class="toggle-album-update" [checked]="showUpdateArtistForm" (change)="toggleUpdateArtistForm()">
+                Update artist/band
+            </mat-slide-toggle>
+            @if (showCreateAlbumForm) {
             <app-album-create [artist]="selectedArtist!"></app-album-create>
+            }
+            @if (showUpdateArtistForm) {
             <app-artist-update [artistId]="artist!._id"></app-artist-update>
+            }
             <app-album-list [artist]="selectedArtist!"></app-album-list>
         </div>
         }

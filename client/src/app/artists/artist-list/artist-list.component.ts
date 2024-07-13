@@ -14,13 +14,17 @@ import { Subscription, debounceTime, distinctUntilChanged, switchMap } from 'rxj
 import { SharedService } from '../../services/shared.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { SearchService } from '../../services/search.service';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-artist-list',
   standalone: true,
   imports: [RouterModule, CommonModule, MatListModule, AlbumListComponent, ArtistCreateComponent, 
-    AlbumCreateComponent, MatButtonModule, MatCardModule, ArtistUpdateComponent, ReactiveFormsModule],
+    AlbumCreateComponent, MatButtonModule, MatCardModule, ArtistUpdateComponent, ReactiveFormsModule,
+    MatAutocompleteModule, MatFormFieldModule, MatSlideToggleModule],
   templateUrl: './artist-list.component.html',
   styleUrl: './artist-list.component.css'
 })
@@ -30,6 +34,9 @@ export class ArtistListComponent implements OnInit, OnDestroy {
   searchControl = new FormControl();
   selectedArtist: Artist | null = null;
   submittedSubscription!: Subscription;
+  showCreateArtistForm = false;
+  showCreateAlbumForm = false;
+  showUpdateArtistForm = false;
 
   constructor(private artistService: ArtistService, private sharedService: SharedService, 
     private searchService: SearchService) {}
@@ -51,6 +58,20 @@ export class ArtistListComponent implements OnInit, OnDestroy {
     if (this.submittedSubscription) {
       this.submittedSubscription.unsubscribe();
     }
+  }
+
+  toggleCreateArtistForm() {
+    this.showCreateArtistForm = !this.showCreateArtistForm;
+  }
+
+  toggleCreateAlbumForm() {
+    this.showCreateAlbumForm = !this.showCreateAlbumForm;
+    this.showUpdateArtistForm = false;
+  }
+
+  toggleUpdateArtistForm() {
+    this.showUpdateArtistForm = !this.showUpdateArtistForm;
+    this.showCreateAlbumForm = false;
   }
 
   setUpSearchControl(): void {

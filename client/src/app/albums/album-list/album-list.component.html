@@ -2,7 +2,7 @@
     @for (album of albums; track album._id) {
     <mat-list-item mat-list-item class="list-item" (click)="selectAlbum(album)">
         <span matLine matListItemTitle class="list-item-name">
-            <div name="item-name">
+            <div class="item-name">
                 {{album.title}}
             </div>
             <button mat-raised-button color="warn" class="deletebtn" (click)="deleteAlbum(album._id)">Delete</button>
@@ -10,8 +10,18 @@
         <span matLine class="list-item-description">{{album.description}}</span>
     </mat-list-item>
     <div [hidden]="selectedAlbum != album? true : null">
+        <mat-slide-toggle class="toggle" [checked]="showCreateForm" (change)="toggleCreateForm()">
+            Add song
+        </mat-slide-toggle>
+        <mat-slide-toggle class="toggle" [checked]="showUpdateForm" (change)="toggleUpdateForm()">
+            Update album
+        </mat-slide-toggle>
+        @if (showCreateForm) {
         <app-song-create [album]="selectedAlbum!" [artist]="artist"></app-song-create>
+        }
+        @if (showUpdateForm) {
         <app-album-update [albumId]="album._id" [artist]="artist"></app-album-update>
+        }
         <app-song-list [album]="selectedAlbum!" [artist]="artist"></app-song-list>
     </div>
     }

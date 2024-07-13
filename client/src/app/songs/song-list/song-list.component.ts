@@ -9,11 +9,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { SongUpdateComponent } from '../song-update/song-update.component';
 import { SharedService } from '../../services/shared.service';
 import { Artist } from '../../models/artist';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-song-list',
   standalone: true,
-  imports: [MatListModule, SongCreateComponent, MatButtonModule, SongUpdateComponent],
+  imports: [MatListModule, SongCreateComponent, MatButtonModule, 
+    SongUpdateComponent, MatSlideToggleModule],
   templateUrl: './song-list.component.html',
   styleUrl: './song-list.component.css'
 })
@@ -21,11 +23,17 @@ export class SongListComponent {
   songs: Song[] = [];
   @Input() artist: Artist | null = null;
   @Input() album: Album | null = null;
+  showUpdateForm = false;
+  selectedSong: Song | null = null;
 
   constructor(private songService: SongService, private sharedService: SharedService) {}
 
   ngOnChanges(): void {
       this.loadSongs();
+  }
+
+  toggleUpdateForm() {
+    this.showUpdateForm = !this.showUpdateForm;
   }
 
   loadSongs(): void {
@@ -41,5 +49,13 @@ export class SongListComponent {
       },
       error: (error) => console.error("Error deleting songs", error)
     })
+  }
+
+  selectSong(song: Song | null): void {
+    if(this.selectedSong === song) {
+      this.selectedSong = null;
+    }
+    else 
+      this.selectedSong = song;
   }
 }
