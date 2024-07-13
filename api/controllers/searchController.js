@@ -3,12 +3,13 @@ const Artist = require('../models/artistModel');
 exports.searchArtists = async (req, res) => {
     try {
         const query = req.query.q;
+        let artists;
         if (!query) {
-            return res.status(400).json({ message: 'Query parameter is required' });
+            artists = await Artist.find();
         }
 
         // Perform a case-insensitive search in artist names, album titles and song titles
-        const artists = await Artist.find({
+        artists = await Artist.find({
             $or: [
                 { name: { $regex: query, $options: 'i' } },
                 { 'albums.title': { $regex: query, $options: 'i' } },

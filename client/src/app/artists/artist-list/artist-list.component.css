@@ -28,3 +28,13 @@ h1 {
 .deletebtn {
     margin-left: auto;
 }
+
+input {
+    border: solid 2px rgb(0, 0, 0);
+    padding: 10px;
+    border-radius: 8px;
+    margin-right: 4px;
+    margin-left: 10px;
+    display: inline-block;
+    width: 30%;
+  }

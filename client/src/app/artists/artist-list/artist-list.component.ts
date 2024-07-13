@@ -10,26 +10,33 @@ import { AlbumCreateComponent } from '../../albums/album-create/album-create.com
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { ArtistUpdateComponent } from '../artist-update/artist-update.component';
-import { Subscription } from 'rxjs';
+import { Subscription, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { SharedService } from '../../services/shared.service';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { SearchService } from '../../services/search.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-artist-list',
   standalone: true,
   imports: [RouterModule, CommonModule, MatListModule, AlbumListComponent, ArtistCreateComponent, 
-    AlbumCreateComponent, MatButtonModule, MatCardModule, ArtistUpdateComponent],
+    AlbumCreateComponent, MatButtonModule, MatCardModule, ArtistUpdateComponent, ReactiveFormsModule],
   templateUrl: './artist-list.component.html',
   styleUrl: './artist-list.component.css'
 })
 export class ArtistListComponent implements OnInit, OnDestroy {
   
   artists: Artist[] = [];
+  searchControl = new FormControl();
   selectedArtist: Artist | null = null;
   submittedSubscription!: Subscription;
 
-  constructor(private artistService: ArtistService, private sharedService: SharedService) {}
+  constructor(private artistService: ArtistService, private sharedService: SharedService, 
+    private searchService: SearchService) {}
 
   ngOnInit(): void {
+    this.setUpSearchControl();
+    
     this.loadArtists();
     // Subscribe to submitted event
     this.submittedSubscription = this.sharedService.submitted$.subscribe((submittedData) => {
@@ -44,6 +51,17 @@ export class ArtistListComponent implements OnInit, OnDestroy {
     if (this.submittedSubscription) {
       this.submittedSubscription.unsubscribe();
     }
+  }
+
+  setUpSearchControl(): void {
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(query => this.searchService.searchArtist(query))
+    ).subscribe({
+      next: (artists) => this.artists = artists,
+      error: (error) => console.error("Error loading artists", error)
+    });
   }
 
   loadArtists(): void {

@@ -1,7 +1,10 @@
 <div>
     <h1>Digital music library</h1>
 
-    <app-artist-create></app-artist-create>
+    <div>
+        <app-artist-create></app-artist-create>
+        <input [formControl]="searchControl" placeholder="Search for artists, albums or songs">
+    </div>
 
     @if (artists.length === 0) {
     <div>
