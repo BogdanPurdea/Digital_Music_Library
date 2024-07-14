@@ -1,21 +1,20 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { Album } from '../../models/album';
 import { AlbumService } from '../../services/album.service';
-import { MatListModule } from '@angular/material/list';
 import { Artist } from '../../models/artist';
 import { SongListComponent } from '../../songs/song-list/song-list.component';
 import { SongCreateComponent } from '../../songs/song-create/song-create.component';
-import { MatButtonModule } from '@angular/material/button';
 import { AlbumUpdateComponent } from '../album-update/album-update.component';
 import { SharedService } from '../../services/shared.service';
 import { Subscription } from 'rxjs';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { SharedModule } from '../../_modules/shared.module';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-album-list',
   standalone: true,
-  imports: [MatListModule, SongListComponent, SongCreateComponent, 
-    MatButtonModule, AlbumUpdateComponent, MatSlideToggleModule],
+  imports: [SharedModule, SongListComponent, SongCreateComponent, AlbumUpdateComponent, ConfirmDialogComponent],
   templateUrl: './album-list.component.html',
   styleUrl: './album-list.component.css'
 })
@@ -28,7 +27,8 @@ export class AlbumListComponent implements OnInit, OnChanges, OnDestroy {
   showCreateForm = false;
   showUpdateForm = false;
 
-  constructor(private albumService: AlbumService, private sharedService: SharedService) { }
+  constructor(private albumService: AlbumService, private sharedService: SharedService,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.selectedAlbum = null;
@@ -39,7 +39,7 @@ export class AlbumListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(): void {
-    this.loadAlbums(); 
+    this.loadAlbums();
   }
 
   ngOnDestroy(): void {
@@ -55,7 +55,7 @@ export class AlbumListComponent implements OnInit, OnChanges, OnDestroy {
 
   toggleUpdateForm() {
     this.showUpdateForm = !this.showUpdateForm;
-    this.showCreateForm = false; 
+    this.showCreateForm = false;
   }
 
   loadAlbums(): void {
@@ -73,12 +73,20 @@ export class AlbumListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   deleteAlbum(albumId: string): void {
-    this.albumService.deleteAlbum(this.artist!._id, albumId).subscribe({
-      next: () => {
-        this.sharedService.notify(this.artist!, null);
-        this.loadAlbums();
-      },
-      error: (error) => console.error("Error deleting album", error)
-    })
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '200px',
+      height: '200px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true)
+        this.albumService.deleteAlbum(this.artist!._id, albumId).subscribe({
+          next: () => {
+            this.sharedService.notify(this.artist!, null);
+            this.loadAlbums();
+          },
+          error: (error) => console.error("Error deleting album", error)
+        });
+    });
   }
 }

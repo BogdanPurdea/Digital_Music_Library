@@ -1,35 +1,28 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Artist } from '../../models/artist';
 import { ArtistService } from '../../services/artist.service';
-import { MatListModule } from '@angular/material/list';
-import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { AlbumListComponent } from '../../albums/album-list/album-list.component';
 import { ArtistCreateComponent } from '../artist-create/artist-create.component';
 import { AlbumCreateComponent } from '../../albums/album-create/album-create.component';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { ArtistUpdateComponent } from '../artist-update/artist-update.component';
 import { Subscription, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { SharedService } from '../../services/shared.service';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { SearchService } from '../../services/search.service';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../modals/confirm-dialog/confirm-dialog.component';
+import { SharedModule } from '../../_modules/shared.module';
 
 @Component({
   selector: 'app-artist-list',
   standalone: true,
-  imports: [RouterModule, CommonModule, MatListModule, AlbumListComponent, ArtistCreateComponent, 
-    AlbumCreateComponent, MatButtonModule, MatCardModule, ArtistUpdateComponent, ReactiveFormsModule,
-    MatAutocompleteModule, MatFormFieldModule, MatSlideToggleModule],
+  imports: [SharedModule, AlbumListComponent, ArtistCreateComponent,
+    AlbumCreateComponent, ArtistUpdateComponent],
   templateUrl: './artist-list.component.html',
   styleUrl: './artist-list.component.css'
 })
 export class ArtistListComponent implements OnInit, OnDestroy {
-  
+
   artists: Artist[] = [];
   searchControl = new FormControl();
   selectedArtist: Artist | null = null;
@@ -38,12 +31,12 @@ export class ArtistListComponent implements OnInit, OnDestroy {
   showCreateAlbumForm = false;
   showUpdateArtistForm = false;
 
-  constructor(private artistService: ArtistService, private sharedService: SharedService, 
-    private searchService: SearchService) {}
+  constructor(private artistService: ArtistService, private sharedService: SharedService,
+    private searchService: SearchService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.setUpSearchControl();
-    
+
     this.loadArtists();
     // Subscribe to submitted event
     this.submittedSubscription = this.sharedService.submitted$.subscribe((submittedData) => {
@@ -93,17 +86,26 @@ export class ArtistListComponent implements OnInit, OnDestroy {
   }
 
   selectArtist(artist: Artist | null): void {
-    if(this.selectedArtist === artist) {
+    if (this.selectedArtist === artist) {
       this.selectedArtist = null;
     }
-    else 
+    else
       this.selectedArtist = artist;
   }
 
   deleteArtist(artistId: string): void {
-    this.artistService.deleteArtist(artistId).subscribe({
-      next: () => this.loadArtists(),
-      error: (error) => console.error("Error deleting artist", error)
-    })
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '200px',
+      height: '200px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true)
+        this.artistService.deleteArtist(artistId).subscribe({
+          next: () => this.loadArtists(),
+          error: (error) => console.error("Error deleting artist", error)
+        });
+    });
+
   }
 }

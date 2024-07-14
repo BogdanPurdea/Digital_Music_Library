@@ -1,18 +1,15 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Input, OnChanges } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SongService } from '../../services/song.service';
 import { Album } from '../../models/album';
 import { Artist } from '../../models/artist';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { SharedService } from '../../services/shared.service';
+import { SharedModule } from '../../_modules/shared.module';
 
 @Component({
   selector: 'app-song-create',
   standalone: true,
-  imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule],
+  imports: [SharedModule],
   templateUrl: './song-create.component.html',
   styleUrl: './song-create.component.css'
 })

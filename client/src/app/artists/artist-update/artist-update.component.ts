@@ -1,16 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ArtistService } from '../../services/artist.service';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { SharedService } from '../../services/shared.service';
+import { SharedModule } from '../../_modules/shared.module';
 
 @Component({
   selector: 'app-artist-update',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, MatButtonModule, MatFormFieldModule, MatInputModule],
+  imports: [SharedModule],
   templateUrl: './artist-update.component.html',
   styleUrl: './artist-update.component.css'
 })

@@ -36,10 +36,10 @@
 
         <div [hidden]="selectedArtist != artist ? true : null">
             <mat-slide-toggle class="toggle-album-create" [checked]="showCreateAlbumForm" (change)="toggleCreateAlbumForm()">
-                Add album
+                Add album to this artist/band
             </mat-slide-toggle>
             <mat-slide-toggle class="toggle-album-update" [checked]="showUpdateArtistForm" (change)="toggleUpdateArtistForm()">
-                Update artist/band
+                Update this artist/band
             </mat-slide-toggle>
             @if (showCreateAlbumForm) {
             <app-album-create [artist]="selectedArtist!"></app-album-create>

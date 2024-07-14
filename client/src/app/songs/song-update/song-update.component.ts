@@ -1,18 +1,15 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SongService } from '../../services/song.service';
 import { SharedService } from '../../services/shared.service';
 import { Artist } from '../../models/artist';
 import { Album } from '../../models/album';
+import { SharedModule } from '../../_modules/shared.module';
 
 @Component({
   selector: 'app-song-update',
   standalone: true,
-  imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule],
+  imports: [SharedModule],
   templateUrl: './song-update.component.html',
   styleUrl: './song-update.component.css'
 })

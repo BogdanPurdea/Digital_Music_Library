@@ -1,17 +1,14 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Input, OnChanges } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlbumService } from '../../services/album.service';
 import { Artist } from '../../models/artist';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { SharedService } from '../../services/shared.service';
+import { SharedModule } from '../../_modules/shared.module';
 
 @Component({
   selector: 'app-album-create',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, MatButtonModule, MatFormFieldModule, MatInputModule],
+  imports: [SharedModule],
   templateUrl: './album-create.component.html',
   styleUrl: './album-create.component.css',
 })
