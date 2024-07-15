@@ -1,10 +1,22 @@
 const Artist = require('../models/artistModel');
+const Album = require('../models/albumModel');
+
 
 //Get all artists
 exports.getArtists = async (req, res) => {
     try {
         const artists = await Artist.find();
         res.status(200).json(artists);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+//Get all artists
+exports.getAlbums = async (req, res) => {
+    try {
+        const albums = await Album.find();
+        res.status(200).json(albums);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

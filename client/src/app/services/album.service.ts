@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Album } from '../models/album';
-import { Observable } from 'rxjs';
+import { Observable, catchError, from, map, mergeMap, throwError } from 'rxjs';
+import { ArtistService } from './artist.service';
+import { AlbumSearchResult } from '../models/albumSearchResult';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,55 @@ import { Observable } from 'rxjs';
 export class AlbumService {
   apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private artistService: ArtistService) { }
+
+  getAlbums(): Observable<AlbumSearchResult[]> {
+    return this.artistService.getArtists().pipe(
+      mergeMap(artists => {
+        const results: AlbumSearchResult[] = [];
+        artists.forEach(artist => {
+          artist.albums.forEach(album => {
+            const albumSearchResult: AlbumSearchResult = {
+              artistId: artist._id,
+              artistName: artist.name,
+              album: album
+            };
+            results.push(albumSearchResult);
+          });
+        });
+        return from([results]);
+      }),
+      catchError(error => {
+        console.error('Error loading albums', error);
+        return throwError('Error loading albums');
+      })
+    );
+  }
+
+  getAlbumsByArtistId(artistId: string): Observable<Album[]> {
+    return this.artistService.getArtistById(artistId).pipe(
+      map(artist => artist.albums),
+      catchError(error => {
+        console.error('Error loading albums', error);
+        return throwError('Error loading albums');
+      })
+    );
+  }
+
+  getAlbumById(artistId: string, albumId: string): Observable<Album | undefined> {
+    return this.getAlbumsByArtistId(artistId).pipe(
+      map(albums => albums.find(album => album._id === albumId),
+        catchError(error => {
+          console.error('Error loading albums', error);
+          return throwError('Error loading albums');
+        }))
+    );
+  }
+
+
+  getAlbumSearchResultByAlbumId(albumSearchResults: AlbumSearchResult[], albumId: string): AlbumSearchResult | undefined {
+    return albumSearchResults.find(result => result.album._id === albumId);
+  }
 
   addAlbum(artistId: string, album: Album): Observable<Album> {
     return this.http.post<Album>(this.apiUrl + '/' + artistId + '/albums', album);

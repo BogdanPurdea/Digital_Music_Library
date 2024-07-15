@@ -1,28 +1,30 @@
 <mat-nav-list>
     @for (album of albums; track album._id) {
-    <mat-list-item mat-list-item class="list-item" (click)="selectAlbum(album)">
+    <mat-list-item mat-list-item class="list-item" (click)="selectAlbum(album._id)">
         <span matLine matListItemTitle class="list-item-name">
             <div class="item-name">
                 {{album.title}}
             </div>
-            <button mat-raised-button color="warn" class="deletebtn" (click)="deleteAlbum(album._id)">Delete</button>
         </span>
         <span matLine class="list-item-description">{{album.description}}</span>
     </mat-list-item>
-    <div [hidden]="selectedAlbum != album? true : null">
-        <mat-slide-toggle class="toggle" [checked]="showCreateForm" (change)="toggleCreateForm()">
-            Add song to this album
-        </mat-slide-toggle>
-        <mat-slide-toggle class="toggle" [checked]="showUpdateForm" (change)="toggleUpdateForm()">
-            Update this album
-        </mat-slide-toggle>
+    <div [hidden]="selectedAlbumId != album._id ? true : null">
+        <div class="operation-grp">
+            <mat-slide-toggle class="toggle" [checked]="showCreateForm" (change)="toggleCreateForm()">
+                Add song to this album
+            </mat-slide-toggle>
+            <mat-slide-toggle class="toggle" [checked]="showUpdateForm" (change)="toggleUpdateForm()">
+                Update this album
+            </mat-slide-toggle>
+            <button mat-raised-button color="warn" class="deletebtn" (click)="deleteAlbum(album._id)">Delete</button>
+        </div>
         @if (showCreateForm) {
-        <app-song-create [album]="selectedAlbum!" [artist]="artist"></app-song-create>
+        <app-song-create [albumId]="selectedAlbumId" [artistId]="artistId"></app-song-create>
         }
         @if (showUpdateForm) {
-        <app-album-update [albumId]="album._id" [artist]="artist"></app-album-update>
+        <app-album-update [albumId]="album._id" [artistId]="artistId"></app-album-update>
         }
-        <app-song-list [album]="selectedAlbum!" [artist]="artist"></app-song-list>
+        <app-song-list [albumId]="selectedAlbumId" [artistId]="artistId"></app-song-list>
     </div>
     }
 </mat-nav-list>

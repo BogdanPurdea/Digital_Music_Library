@@ -1,19 +1,21 @@
 <mat-nav-list>
     @for (song of songs; track song._id) {
-    <mat-list-item mat-list-item class="list-item" (click)="selectSong(song)">
+    <mat-list-item mat-list-item class="list-item" (click)="selectSong(song._id)">
         <span matListItemTitle class="list-item-name">
             <div class="item-name">
                 {{song.title}} {{song.length}}
             </div>
-            <button mat-raised-button color="warn" class="deletebtn" (click)="deleteSong(song._id)">Delete</button>
         </span>
     </mat-list-item>
-    <div [hidden]="selectedSong != song ? true : null">
-        <mat-slide-toggle class="toggle" [checked]="showUpdateForm" (change)="toggleUpdateForm()">
-            Update song
-        </mat-slide-toggle>
+    <div [hidden]="selectedSongId != song._id ? true : null">
+        <div class="operation-grp">
+            <mat-slide-toggle class="toggle" [checked]="showUpdateForm" (change)="toggleUpdateForm()">
+                Update song
+            </mat-slide-toggle>
+            <button mat-raised-button color="warn" class="deletebtn" (click)="deleteSong(song._id)">Delete</button>
+        </div>
         @if (showUpdateForm) {
-        <app-song-update [songId]="song._id" [album]="album" [artist]="artist"></app-song-update>
+        <app-song-update [songId]="song._id" [albumId]="albumId" [artistId]="artistId"></app-song-update>
         }
     </div>
     }

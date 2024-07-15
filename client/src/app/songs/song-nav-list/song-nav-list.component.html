@@ -1,0 +1,30 @@
+<input [formControl]="searchControl" placeholder="Search for songs" [matAutocomplete]="auto">
+<mat-autocomplete #auto="matAutocomplete">
+    @for (song of songs; track song.song._id) {
+    <mat-option [value]="song.song.title">
+        {{ song.song.title }}
+    </mat-option>
+    }
+</mat-autocomplete>
+<mat-nav-list>
+    @for (song of songs; track song.song._id) {
+    <mat-list-item mat-list-item class="list-item" (click)="selectSong(song.song._id)">
+        <span matListItemTitle class="list-item-name">
+            <div class="item-name">
+                {{song.song.title}} {{song.song.length}} from {{song.albumName}} by {{song.artistName}}
+            </div>
+        </span>
+    </mat-list-item>
+    <div [hidden]="selectedSongId != song.song._id ? true : null">
+        <div class="operation-grp">
+            <mat-slide-toggle class="toggle" [checked]="showUpdateForm" (change)="toggleUpdateForm()">
+                Update song
+            </mat-slide-toggle>
+            <button mat-raised-button color="warn" class="deletebtn" (click)="deleteSong(song.song._id)">Delete</button>
+        </div>
+        @if (showUpdateForm) {
+        <app-song-update [songId]="song.song._id" [albumId]="song.albumId" [artistId]="song.artistId"></app-song-update>
+        }
+    </div>
+    }
+</mat-nav-list>

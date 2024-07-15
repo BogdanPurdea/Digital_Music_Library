@@ -8,12 +8,14 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatInputModule } from '@angular/material/input';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule, 
-    RouterModule, 
+    RouterModule,
+    BsDropdownModule.forRoot(),
     MatListModule, 
     MatButtonModule,
     MatInputModule,
@@ -25,7 +27,8 @@ import { MatInputModule } from '@angular/material/input';
   ],
   exports: [
     CommonModule, 
-    RouterModule, 
+    RouterModule,
+    BsDropdownModule, 
     MatListModule, 
     MatButtonModule, 
     MatInputModule,

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Artist } from '../models/artist';
-import { Album } from '../models/album';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,7 @@ export class SharedService {
 
   constructor() { }
 
-  notify(selectedArtist: Artist | null, selectedAlbum: Album | null): void {
-    this.submittedSource.next({ selectedArtist, selectedAlbum });
+  notify(selectedArtistId: string | null, selectedAlbumId: string | null): void {
+    this.submittedSource.next({ selectedArtistId, selectedAlbumId });
   }
 }

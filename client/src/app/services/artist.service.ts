@@ -10,7 +10,6 @@ import { Album } from '../models/album';
 })
 export class ArtistService {
   apiUrl = environment.apiUrl;
-  artists: Artist[] = [];
 
   constructor(private http: HttpClient) { }
 

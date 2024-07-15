@@ -5,27 +5,23 @@
     border-color: rgb(0, 0, 0);
     margin: 8px;
     padding: 8px;
-    margin-left: 30px;
+    margin-left: 10px;
     width: auto;
     height: auto !important;
 }
 
 .list-item-name {
-    font-size: 16px;
+    font-size: 14px;
     margin: 0;
     width: 100%;
 }
 
 .item-name {
-    padding-top: 8px;
-}
-
-.list-item-description {
-    white-space: normal;
+    padding: 6px;
 }
 
 .toggle {
-    margin-left: 50px;
+    margin-left: 60px;
     margin-bottom: 10px;
 }
 .operation-grp {
@@ -35,8 +31,9 @@
 .deletebtn {
     margin-right: 10px;
     margin-left: auto;
+    border-color: rgb(0, 0, 0);
+    border-width: 1px;
 }
-
 input {
     border: solid 2px rgb(0, 0, 0);
     padding: 10px;

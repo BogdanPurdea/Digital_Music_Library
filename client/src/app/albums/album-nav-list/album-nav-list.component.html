@@ -1,0 +1,41 @@
+<input [formControl]="searchControl" placeholder="Search for albums" [matAutocomplete]="auto">
+<mat-autocomplete #auto="matAutocomplete">
+    @for (album of albums; track album.album._id) {
+    <mat-option [value]="album.album.title">
+        {{ album.album.title }}
+    </mat-option>
+    }
+</mat-autocomplete>
+<mat-nav-list>
+
+    @for (album of albums; track album.album._id) {
+    <mat-list-item mat-list-item class="list-item" (click)="selectAlbum(album.album._id)">
+        <span matLine matListItemTitle class="list-item-name">
+            <div class="item-name">
+                {{album.album.title}} by {{album.artistName}}
+            </div>
+
+        </span>
+        <span matLine class="list-item-description">{{album.album.description}}</span>
+    </mat-list-item>
+    <div [hidden]="selectedAlbumId != album.album._id ? true : null">
+        <div class="operation-grp">
+            <mat-slide-toggle class="toggle" [checked]="showCreateForm" (change)="toggleCreateForm()">
+                Add song to this album
+            </mat-slide-toggle>
+            <mat-slide-toggle class="toggle" [checked]="showUpdateForm" (change)="toggleUpdateForm()">
+                Update this album
+            </mat-slide-toggle>
+            <button mat-raised-button color="warn" class="deletebtn"
+                (click)="deleteAlbum(album.album._id)">Delete</button>
+        </div>
+        @if (showCreateForm) {
+        <app-song-create [albumId]="selectedAlbumId" [artistId]="album.artistId"></app-song-create>
+        }
+        @if (showUpdateForm) {
+        <app-album-update [albumId]="album.album._id" [artistId]="album.artistId"></app-album-update>
+        }
+        <app-song-list [albumId]="selectedAlbumId" [artistId]="album.artistId"></app-song-list>
+    </div>
+    }
+</mat-nav-list>

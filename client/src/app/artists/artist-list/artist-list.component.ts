@@ -25,7 +25,7 @@ export class ArtistListComponent implements OnInit, OnDestroy {
 
   artists: Artist[] = [];
   searchControl = new FormControl();
-  selectedArtist: Artist | null = null;
+  selectedArtistId: string | null = null;
   submittedSubscription!: Subscription;
   showCreateArtistForm = false;
   showCreateAlbumForm = false;
@@ -40,10 +40,9 @@ export class ArtistListComponent implements OnInit, OnDestroy {
     this.loadArtists();
     // Subscribe to submitted event
     this.submittedSubscription = this.sharedService.submitted$.subscribe((submittedData) => {
-      this.selectedArtist = null;
+      this.selectedArtistId = null;
       this.loadArtists();
       this.selectArtist(submittedData.selectedArtist);
-      console.log(this.selectedArtist);
     });
   }
 
@@ -85,18 +84,18 @@ export class ArtistListComponent implements OnInit, OnDestroy {
     });
   }
 
-  selectArtist(artist: Artist | null): void {
-    if (this.selectedArtist === artist) {
-      this.selectedArtist = null;
+  selectArtist(artistId: string | null): void {
+    if (this.selectedArtistId === artistId) {
+      this.selectedArtistId = null;
     }
     else
-      this.selectedArtist = artist;
+      this.selectedArtistId = artistId;
   }
 
   deleteArtist(artistId: string): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '200px',
-      height: '200px'
+      height: '150px'
     });
 
     dialogRef.afterClosed().subscribe(result => {

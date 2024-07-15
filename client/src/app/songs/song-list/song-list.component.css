@@ -13,8 +13,6 @@
 .list-item-name {
     font-size: 14px;
     margin: 0;
-    display: flex;
-    justify-content: flex-end; /* Aligns items to the right */
     width: 100%;
 }
 
@@ -24,9 +22,16 @@
 
 .toggle {
     margin-left: 60px;
+    margin-bottom: 10px;
+}
+
+.operation-grp {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .deletebtn {
+    margin-right: 10px;
     margin-left: auto;
     border-color: rgb(0, 0, 0);
     border-width: 1px;

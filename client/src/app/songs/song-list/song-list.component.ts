@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Song } from '../../models/song';
 import { Album } from '../../models/album';
 import { SongService } from '../../services/song.service';
@@ -9,6 +9,8 @@ import { Artist } from '../../models/artist';
 import { SharedModule } from '../../_modules/shared.module';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../modals/confirm-dialog/confirm-dialog.component';
+import { ArtistService } from '../../services/artist.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-song-list',
@@ -17,15 +19,23 @@ import { ConfirmDialogComponent } from '../../modals/confirm-dialog/confirm-dial
   templateUrl: './song-list.component.html',
   styleUrl: './song-list.component.css'
 })
-export class SongListComponent {
+export class SongListComponent implements OnInit, OnChanges {
   songs: Song[] = [];
-  @Input() artist: Artist | null = null;
-  @Input() album: Album | null = null;
+  @Input() artistId: string | null = null;
+  @Input() albumId: string | null = null;
   showUpdateForm = false;
-  selectedSong: Song | null = null;
+  submittedSubscription!: Subscription;
+  selectedSongId: string | null = null;
 
-  constructor(private songService: SongService, private sharedService: SharedService,
+  constructor(private songService: SongService, private artistService: ArtistService, private sharedService: SharedService,
     public dialog: MatDialog) { }
+
+  ngOnInit(): void {
+    this.submittedSubscription = this.sharedService.submitted$.subscribe((submittedData) => {
+      this.loadSongs();
+    });
+  }
+
 
   ngOnChanges(): void {
     this.loadSongs();
@@ -36,21 +46,26 @@ export class SongListComponent {
   }
 
   loadSongs(): void {
-    if (this.album !== null)
-      this.songs = this.album.songs;
+    if (this.artistId !== null && this.albumId !== null)
+       {
+        this.songService.getSongsByAlbumId(this.artistId, this.albumId).subscribe({
+          next: (songs) => this.songs = songs,
+          error: (error) => console.error("Error loading artists", error)
+        });
+      }
   }
 
-  deleteSong(albumId: string): void {
+  deleteSong(songId: string): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '200px',
-      height: '200px'
+      height: '150px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true)
-        this.songService.deleteSong(this.artist!._id, this.album!._id, albumId).subscribe({
+        this.songService.deleteSong(this.artistId!, this.albumId!, songId).subscribe({
           next: () => {
-            this.sharedService.notify(this.artist, this.album);
+            this.sharedService.notify(this.artistId, this.albumId);
             this.loadSongs();
           },
           error: (error) => console.error("Error deleting songs", error)
@@ -58,11 +73,11 @@ export class SongListComponent {
     });
   }
 
-  selectSong(song: Song | null): void {
-    if (this.selectedSong === song) {
-      this.selectedSong = null;
+  selectSong(songId: string | null): void {
+    if (this.selectedSongId === songId) {
+      this.selectedSongId = null;
     }
     else
-      this.selectedSong = song;
+      this.selectedSongId = songId;
   }
 }

@@ -13,35 +13,38 @@ import { ConfirmDialogComponent } from '../../modals/confirm-dialog/confirm-dial
 import { ArtistService } from '../../services/artist.service';
 import { FormControl } from '@angular/forms';
 import { SearchService } from '../../services/search.service';
+import { AlbumSearchResult } from '../../models/albumSearchResult';
 
 @Component({
-  selector: 'app-album-list',
+  selector: 'app-album-nav-list',
   standalone: true,
   imports: [SharedModule, SongListComponent, SongCreateComponent, AlbumUpdateComponent, ConfirmDialogComponent],
-  templateUrl: './album-list.component.html',
-  styleUrl: './album-list.component.css'
+  templateUrl: './album-nav-list.component.html',
+  styleUrl: './album-nav-list.component.css'
 })
-export class AlbumListComponent implements OnInit, OnChanges, OnDestroy {
+export class AlbumNavListComponent implements OnInit, OnChanges, OnDestroy {
 
-  albums: Album[] = [];
-  @Input() artistId: string | null = null;
+  albums: AlbumSearchResult[] = [];
+  searchControl = new FormControl();
   selectedAlbumId: string | null = null;
   submittedSubscription!: Subscription;
   showCreateForm = false;
   showUpdateForm = false;
 
-  constructor(private albumService: AlbumService,
-    private sharedService: SharedService, public dialog: MatDialog) { }
+  constructor(private albumService: AlbumService, private sharedService: SharedService, 
+    private searchService: SearchService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.loadAllAlbums();
+    this.setUpSearchControl();
     this.submittedSubscription = this.sharedService.submitted$.subscribe((submittedData) => {
-      this.loadAlbums();
+      this.loadAllAlbums();
       this.selectAlbum(submittedData.selectedAlbum);
     });
   }
 
   ngOnChanges(): void {
-    this.loadAlbums();
+    this.loadAllAlbums();
   }
 
   ngOnDestroy(): void {
@@ -60,14 +63,24 @@ export class AlbumListComponent implements OnInit, OnChanges, OnDestroy {
     this.showCreateForm = false;
   }
 
-  loadAlbums(): void {
-    if (this.artistId !== null) {
-      this.albumService.getAlbumsByArtistId(this.artistId).subscribe({
-        next: (albums) => this.albums = albums,
-        error: (error) => console.error("Error loading artists", error)
-      });
-    }
+  setUpSearchControl(): void {
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(query => this.searchService.searchAlbum(query))
+    ).subscribe({
+      next: (albums) => this.albums = albums,
+      error: (error) => console.error("Error loading artists", error)
+    });
   }
+
+  loadAllAlbums(): void {
+    this.albumService.getAlbums().subscribe({
+      next: (albums) => this.albums = albums,
+      error: (error) => console.error("Error loading artists", error)
+    });
+  }
+
   selectAlbum(albumId: string | null): void {
     if (this.selectedAlbumId === albumId) {
       this.selectedAlbumId = null;
@@ -82,12 +95,14 @@ export class AlbumListComponent implements OnInit, OnChanges, OnDestroy {
       height: '150px'
     });
 
+    const albumSearchResult = this.albumService.getAlbumSearchResultByAlbumId(this.albums, albumId);
+
     dialogRef.afterClosed().subscribe(result => {
       if (result === true)
-        this.albumService.deleteAlbum(this.artistId!, albumId).subscribe({
+        this.albumService.deleteAlbum(albumSearchResult?.artistId!, albumId).subscribe({
           next: () => {
-            this.sharedService.notify(this.artistId, null);
-            this.loadAlbums();
+            this.sharedService.notify(albumSearchResult?.artistId!, null);
+            this.loadAllAlbums();
           },
           error: (error) => console.error("Error deleting album", error)
         });

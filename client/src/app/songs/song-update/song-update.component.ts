@@ -15,8 +15,8 @@ import { SharedModule } from '../../_modules/shared.module';
 })
 export class SongUpdateComponent implements OnChanges {
   songForm!: FormGroup;
-  @Input() artist: Artist | null = null;
-  @Input() album: Album | null = null;
+  @Input() artistId: string | null = null;
+  @Input() albumId: string | null = null;
   @Input() songId: string | null = null;
 
   constructor(private formBuilder: FormBuilder, private songService: SongService, 
@@ -35,8 +35,8 @@ export class SongUpdateComponent implements OnChanges {
     if (this.songForm.valid) {
       const formData = { ...this.songForm.value };
       // Update song
-      this.songService.updateSong(this.artist!._id, this.album!._id, this.songId!, formData).subscribe({
-        next: () => this.sharedService.notify(this.artist, this.album),
+      this.songService.updateSong(this.artistId!, this.albumId!, this.songId!, formData).subscribe({
+        next: () => this.sharedService.notify(this.artistId, this.albumId),
         error: (error) => console.error('Error creating album', error)}
       );
     }

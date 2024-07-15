@@ -1,6 +1,4 @@
 <div>
-    <h1>Digital music library</h1>
-
     <mat-slide-toggle class="toggle-artist-create" [checked]="showCreateArtistForm" (change)="toggleCreateArtistForm()">
         Add artist/band
     </mat-slide-toggle>
@@ -8,11 +6,13 @@
     <app-artist-create></app-artist-create>
     }
 
-    <input [formControl]="searchControl" placeholder="Search for artists, albums or songs" [matAutocomplete]="auto">
+    <input [formControl]="searchControl" placeholder="Search for artists" [matAutocomplete]="auto">
     <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let artist of artists" [value]="artist.name">
-          {{ artist.name }}
+        @for (artist of artists; track artist._id) {
+        <mat-option [value]="artist.name">
+            {{ artist.name }}
         </mat-option>
+        }
     </mat-autocomplete>
 
     @if (artists.length === 0) {
@@ -22,32 +22,34 @@
     }
     <mat-nav-list>
         @for (artist of artists; track artist._id) {
-        <mat-list-item mat-list-item class="list-item" (click)="selectArtist(artist)">
+        <mat-list-item mat-list-item class="list-item" (click)="selectArtist(artist._id)">
             <span matListItemTitle class="list-item-name">
                 <div class="item-name">
                     {{artist.name}}
                 </div>
-                
-                <button mat-raised-button color="warn" class="deletebtn"
-                    (click)="deleteArtist(artist._id)">Delete
-                </button>
             </span>
         </mat-list-item>
 
-        <div [hidden]="selectedArtist != artist ? true : null">
-            <mat-slide-toggle class="toggle-album-create" [checked]="showCreateAlbumForm" (change)="toggleCreateAlbumForm()">
-                Add album to this artist/band
-            </mat-slide-toggle>
-            <mat-slide-toggle class="toggle-album-update" [checked]="showUpdateArtistForm" (change)="toggleUpdateArtistForm()">
-                Update this artist/band
-            </mat-slide-toggle>
+        <div [hidden]="selectedArtistId != artist._id ? true : null">
+            <div class="operation-grp">
+                <mat-slide-toggle class="toggle-album-create" [checked]="showCreateAlbumForm"
+                    (change)="toggleCreateAlbumForm()">
+                    Add album to this artist/band
+                </mat-slide-toggle>
+                <mat-slide-toggle class="toggle-album-update" [checked]="showUpdateArtistForm"
+                    (change)="toggleUpdateArtistForm()">
+                    Update this artist/band
+                </mat-slide-toggle>
+                <button mat-raised-button color="warn" class="deletebtn" (click)="deleteArtist(artist._id)">Delete
+                </button>
+            </div>
             @if (showCreateAlbumForm) {
-            <app-album-create [artist]="selectedArtist!"></app-album-create>
+            <app-album-create [artistId]="selectedArtistId"></app-album-create>
             }
             @if (showUpdateArtistForm) {
             <app-artist-update [artistId]="artist!._id"></app-artist-update>
             }
-            <app-album-list [artist]="selectedArtist!"></app-album-list>
+            <app-album-list [artistId]="selectedArtistId"></app-album-list>
         </div>
         }
     </mat-nav-list>

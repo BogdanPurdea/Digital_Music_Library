@@ -5,6 +5,8 @@ const searchController = require('../controllers/searchController');
 
 //Search route
 router.get('/search', searchController.searchArtists);
+router.get('/search/albums', searchController.searchAlbums);
+router.get('/search/songs', searchController.searchSongs);
 
 // Artist routes
 router.get('/', apiController.getArtists);

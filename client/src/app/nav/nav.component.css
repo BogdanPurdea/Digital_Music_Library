@@ -1,0 +1,10 @@
+.navbar {
+  margin-bottom: 20px;
+}
+.navbar-nav {
+    display: flex;
+    flex-direction: row;
+  }
+.nav-item {
+    margin-left: 20px;
+}
