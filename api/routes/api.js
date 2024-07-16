@@ -2,8 +2,14 @@ var express = require('express');
 var router = express.Router();
 const apiController = require('../controllers/apiController');
 const searchController = require('../controllers/searchController');
+const errorController = require('../controllers/errorController');
 
-//Search route
+//Error routes
+router.get('/not-found', errorController.GetNotFound);
+router.get('/bad-request', errorController.GetBadRequest);
+router.get('/server-error', errorController.GetServerError);
+
+//Search routes
 router.get('/search', searchController.searchArtists);
 router.get('/search/albums', searchController.searchAlbums);
 router.get('/search/songs', searchController.searchSongs);
