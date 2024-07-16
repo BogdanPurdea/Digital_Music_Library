@@ -32,7 +32,7 @@ export class AlbumService {
         return from([results]);
       }),
       catchError(error => {
-        console.error('Error loading albums', error);
+        console.error('Error loading albums from GetAlbums', error);
         return throwError('Error loading albums');
       })
     );
@@ -42,7 +42,7 @@ export class AlbumService {
     return this.artistService.getArtistById(artistId).pipe(
       map(artist => artist.albums),
       catchError(error => {
-        console.error('Error loading albums', error);
+        console.error('Error loading albums from getAlbumsByArtistId', error);
         return throwError('Error loading albums');
       })
     );
@@ -52,7 +52,7 @@ export class AlbumService {
     return this.getAlbumsByArtistId(artistId).pipe(
       map(albums => albums.find(album => album._id === albumId),
         catchError(error => {
-          console.error('Error loading albums', error);
+          console.error('Error loading albums from getAlbumById', error);
           return throwError('Error loading albums');
         }))
     );
@@ -63,33 +63,15 @@ export class AlbumService {
     return albumSearchResults.find(result => result.album._id === albumId);
   }
 
-  getArtistsFromAlbums(): Observable<Artist[]> {
-    return this.getAlbums().pipe(
-      map((albumResults: AlbumSearchResult[]) => {
-        const artistMap = new Map<string, Artist>();
-        albumResults.forEach(albumResult => {
-          if (!artistMap.has(albumResult.artistId)) {
-            artistMap.set(albumResult.artistId, {
-              _id: albumResult.artistId, 
-              name: albumResult.artistName, 
-              albums: []
-            });
-          }
-        });
-        return Array.from(artistMap.values());
-      })
-    );
-  }
-
   addAlbum(artistId: string, album: Album): Observable<Album> {
-    return this.http.post<Album>(this.apiUrl + '/' + artistId + '/albums', album);
+    return this.http.post<Album>(this.apiUrl + artistId + '/albums', album);
   }
 
   updateAlbum(artistId: string, albumId: string, album: Album): Observable<Album> {
-    return this.http.put<Album>(this.apiUrl + '/' + artistId + '/albums/' + albumId, album);
+    return this.http.put<Album>(this.apiUrl + artistId + '/albums/' + albumId, album);
   }
 
   deleteAlbum(artistId: string, albumId: string) {
-    return this.http.delete(this.apiUrl + '/' + artistId + '/albums/' + albumId);
+    return this.http.delete(this.apiUrl + artistId + '/albums/' + albumId);
   }
 }

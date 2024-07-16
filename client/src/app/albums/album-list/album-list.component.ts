@@ -41,7 +41,8 @@ export class AlbumListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(): void {
-    this.loadAlbums();
+    if (this.artistId !== null)
+      this.loadAlbums();
   }
 
   ngOnDestroy(): void {

@@ -2,7 +2,7 @@
     Add song
 </mat-slide-toggle>
 @if (showCreateSongForm) {
-    <app-song-create></app-song-create>
+    <app-song-create [fromNav]="true"></app-song-create>
 }
 <input [formControl]="searchControl" placeholder="Search for songs" [matAutocomplete]="auto">
 <mat-autocomplete #auto="matAutocomplete">

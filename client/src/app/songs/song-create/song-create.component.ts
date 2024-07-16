@@ -5,6 +5,7 @@ import { Album } from '../../models/album';
 import { Artist } from '../../models/artist';
 import { SharedService } from '../../services/shared.service';
 import { SharedModule } from '../../_modules/shared.module';
+import { ArtistService } from '../../services/artist.service';
 
 @Component({
   selector: 'app-song-create',
@@ -17,16 +18,17 @@ export class SongCreateComponent implements OnInit, OnChanges {
   songForm!: FormGroup;
   @Input() artistId: string | null = null;
   @Input() albumId: string | null = null;
+  @Input() fromNav: boolean = false;
   artists: Artist[] | null = null;
   albums: Album[] | null = null;
 
   constructor(private formBuilder: FormBuilder, private songService: SongService,
-    private sharedService: SharedService) { }
+    private artistService: ArtistService, private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.initializeFormGroup();
     if (this.artistId === null && this.albumId === null)
-      this.songService.getArtistsWithAlbumsFromSongs().subscribe({
+      this.artistService.getArtists().subscribe({
         next: (artistResults) => {
           this.artists = artistResults;
         },
@@ -35,12 +37,13 @@ export class SongCreateComponent implements OnInit, OnChanges {
         }
       });
     else {
-      this.songForm.patchValue({ selectedArtist: this.artistId, selectedAlbum: this.albumId })
+      this.songForm.patchValue({ selectedArtist: this.artistId, selectedAlbum: this.albumId });
     }
   }
 
   ngOnChanges(): void {
     this.initializeFormGroup();
+    this.songForm.patchValue({ selectedArtist: this.artistId, selectedAlbum: this.albumId });
   }
 
 
@@ -70,8 +73,10 @@ export class SongCreateComponent implements OnInit, OnChanges {
         error: (error) => console.error('Error creating album', error)
       }
       );
-      this.artistId = null;
-      this.albumId = null;
+      if (this.fromNav) {
+        this.artistId = null;
+        this.albumId = null;
+      }
     }
   }
 }

@@ -4,6 +4,7 @@ import { AlbumService } from '../../services/album.service';
 import { Artist } from '../../models/artist';
 import { SharedService } from '../../services/shared.service';
 import { SharedModule } from '../../_modules/shared.module';
+import { ArtistService } from '../../services/artist.service';
 
 @Component({
   selector: 'app-album-create',
@@ -16,14 +17,14 @@ export class AlbumCreateComponent implements OnInit, OnChanges {
   albumForm!: FormGroup;
   @Input() artistId: string | null = null;
   artists: Artist[] | null = null;
-
+  
   constructor(private formBuilder: FormBuilder, private albumService: AlbumService,
-    private sharedService: SharedService) { }
+    private sharedService: SharedService, private artistService: ArtistService) { }
 
   ngOnInit(): void {
     this.initializeFormGroup();
     if (this.artistId === null)
-      this.albumService.getArtistsFromAlbums().subscribe({
+      this.artistService.getArtists().subscribe({
         next: (artistResults) => {
           this.artists = artistResults;
         },
@@ -38,6 +39,7 @@ export class AlbumCreateComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.initializeFormGroup();
+    this.albumForm.patchValue({ selectedArtist: this.artistId });
   }
 
   initializeFormGroup(): void {

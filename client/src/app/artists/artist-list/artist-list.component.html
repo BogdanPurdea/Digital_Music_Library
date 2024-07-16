@@ -49,7 +49,7 @@
             @if (showUpdateArtistForm) {
             <app-artist-update [artistId]="artist!._id"></app-artist-update>
             }
-            <app-album-list [artistId]="selectedArtistId"></app-album-list>
+            <app-album-list [artistId]="artist!._id"></app-album-list>
         </div>
         }
     </mat-nav-list>

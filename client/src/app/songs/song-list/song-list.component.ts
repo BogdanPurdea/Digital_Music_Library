@@ -27,7 +27,7 @@ export class SongListComponent implements OnInit, OnChanges, OnDestroy {
   submittedSubscription!: Subscription;
   selectedSongId: string | null = null;
 
-  constructor(private songService: SongService, private artistService: ArtistService, private sharedService: SharedService,
+  constructor(private songService: SongService, private sharedService: SharedService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -37,7 +37,9 @@ export class SongListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(): void {
-    this.loadSongs();
+    if (this.albumId !== null)
+      this.loadSongs();
+    this.selectedSongId = null;
   }
 
   ngOnDestroy(): void {
@@ -51,13 +53,12 @@ export class SongListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   loadSongs(): void {
-    if (this.artistId !== null && this.albumId !== null)
-       {
-        this.songService.getSongsByAlbumId(this.artistId, this.albumId).subscribe({
-          next: (songs) => this.songs = songs,
-          error: (error) => console.error("Error loading artists", error)
-        });
-      }
+    if (this.artistId !== null && this.albumId !== null) {
+      this.songService.getSongsByAlbumId(this.artistId, this.albumId).subscribe({
+        next: (songs) => this.songs = songs,
+        error: (error) => console.error("Error loading artists", error)
+      });
+    }
   }
 
   deleteSong(songId: string): void {

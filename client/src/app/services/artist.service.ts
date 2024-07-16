@@ -3,7 +3,6 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Artist } from '../models/artist';
 import { Observable } from 'rxjs';
-import { Album } from '../models/album';
 
 @Injectable({
   providedIn: 'root'
@@ -14,22 +13,22 @@ export class ArtistService {
   constructor(private http: HttpClient) { }
 
   getArtists(): Observable<Artist[]> {
-    return this.http.get<Artist[]>(this.apiUrl);
+    return this.http.get<Artist[]>(this.apiUrl + 'artists/');
   }
 
   getArtistById(id: string): Observable<Artist> {
-    return this.http.get<Artist>(this.apiUrl + '/' + id);
+    return this.http.get<Artist>(this.apiUrl + 'artists/' + id);
   }
 
   createArtist(artist: Artist): Observable<Artist> {
-    return this.http.post<Artist>(this.apiUrl, artist);
+    return this.http.post<Artist>(this.apiUrl + 'artists', artist);
   }
 
   updateArtist(id: string, artist: Artist): Observable<Artist> {
-    return this.http.put<Artist>(this.apiUrl + '/' + id, artist);
+    return this.http.put<Artist>(this.apiUrl + 'artists/' + id, artist);
   }
 
   deleteArtist(id: string) {
-    return this.http.delete(this.apiUrl + '/' + id);
+    return this.http.delete(this.apiUrl + 'artists/' + id);
   }
 }

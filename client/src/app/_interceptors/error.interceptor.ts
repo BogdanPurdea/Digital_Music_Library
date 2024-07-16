@@ -18,11 +18,11 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
           console.log("401 Authentication Error");
           break;
         case 404:
-          router.navigateByUrl('/not-found');
+          router.navigateByUrl('not-found');
           break;
         case 500:
           const navigationExtras: NavigationExtras = {state: {error: err.error}};
-          router.navigateByUrl('/server-error', navigationExtras);
+          router.navigateByUrl('server-error', navigationExtras);
           console.log("500 Internal Server Error");
           break;
         default:
