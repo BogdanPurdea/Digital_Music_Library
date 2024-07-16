@@ -8,10 +8,15 @@
 <mat-autocomplete #auto="matAutocomplete">
     @for (song of songs; track song.song._id) {
     <mat-option [value]="song.song.title">
-        {{ song.song.title }}
+        {{ song.song.title }} by {{song.artistName}}
     </mat-option>
     }
 </mat-autocomplete>
+@if (songs.length === 0) {
+    <div class="list-empty">
+        <h3>No matching entries</h3>
+    </div>
+    }
 <mat-nav-list>
     @for (song of songs; track song.song._id) {
     <mat-list-item mat-list-item class="list-item" (click)="selectSong(song.song._id)">

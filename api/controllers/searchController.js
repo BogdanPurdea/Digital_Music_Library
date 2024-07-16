@@ -8,7 +8,7 @@ exports.searchArtists = async (req, res) => {
             artists = await Artist.find();
         }
 
-        // Perform a case-insensitive search in artist names, album titles and song titles
+        // Perform a case-insensitive search in artist
         artists = await Artist.find({
             name: { $regex: query, $options: 'i' }
         });
@@ -37,12 +37,15 @@ exports.searchAlbums = async (req, res) => {
             ]);
         }
 
-        // Perform a case-insensitive search in artist names, album titles and song titles
+        // Perform a case-insensitive search in artist names, album titles
         albums = await Artist.aggregate([
             { $unwind: '$albums' }, // Unwind to deconstruct the albums array
             {
                 $match: {
-                    'albums.title': { $regex: query, $options: 'i' } // Match albums by title
+                    $or: [
+                    { name: { $regex: query, $options: 'i' } },
+                    { 'albums.title': { $regex: query, $options: 'i' } } // Match albums by title
+                    ]
                 }
             },
             {
@@ -90,7 +93,11 @@ exports.searchSongs = async (req, res) => {
             { $unwind: '$albums.songs' }, // Unwind to deconstruct the songs array within each album
             {
                 $match: {
-                    'albums.songs.title': { $regex: query, $options: 'i' } // Match songs by title
+                    $or: [
+                        { name: { $regex: query, $options: 'i' } },
+                        { 'albums.title': { $regex: query, $options: 'i' } }, // Match albums by title
+                        { 'albums.songs.title': { $regex: query, $options: 'i' } } // Match songs by title
+                    ]
                 }
             },
             {

@@ -52,3 +52,6 @@ input {
     display: block;
     width: 30%;
 }
+.list-empty {
+    margin-left: 10px;
+}
