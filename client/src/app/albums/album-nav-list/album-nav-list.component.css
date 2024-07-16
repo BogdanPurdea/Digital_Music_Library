@@ -20,6 +20,11 @@
     padding-top: 8px;
 }
 
+.toggle-album-create {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
 .list-item-description {
     white-space: normal;
 }
@@ -41,6 +46,7 @@ input {
     border: solid 2px rgb(0, 0, 0);
     padding: 10px;
     border-radius: 8px;
+    margin-top: 10px;
     margin-right: 4px;
     margin-left: 10px;
     display: block;

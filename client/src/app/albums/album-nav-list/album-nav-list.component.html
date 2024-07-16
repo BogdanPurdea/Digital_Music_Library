@@ -1,3 +1,10 @@
+<mat-slide-toggle class="toggle-album-create" [checked]="showCreateAlbumForm" (change)="toggleCreateAlbumForm()">
+    Add album
+</mat-slide-toggle>
+@if (showCreateAlbumForm) {
+    <app-album-create></app-album-create>
+}
+
 <input [formControl]="searchControl" placeholder="Search for albums" [matAutocomplete]="auto">
 <mat-autocomplete #auto="matAutocomplete">
     @for (album of albums; track album.album._id) {
@@ -6,8 +13,8 @@
     </mat-option>
     }
 </mat-autocomplete>
-<mat-nav-list>
 
+<mat-nav-list>
     @for (album of albums; track album.album._id) {
     <mat-list-item mat-list-item class="list-item" (click)="selectAlbum(album.album._id)">
         <span matLine matListItemTitle class="list-item-name">

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, from, map, mergeMap, throwError } from 'rxjs';
+import { Observable, catchError, from, map, mergeMap, of, throwError } from 'rxjs';
 import { Song } from '../models/song';
 import { AlbumService } from './album.service';
 import { SongSearchResult } from '../models/songSearchResults';
+import { Artist } from '../models/artist';
+import { AlbumSearchResult } from '../models/albumSearchResult';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +54,38 @@ export class SongService {
 
   getSongSearchResultBySongId(songSearchResults: SongSearchResult[], songId: string): SongSearchResult | undefined {
     return songSearchResults.find(result => result.song._id === songId);
+  }
+
+  getArtistsWithAlbumsFromSongs(): Observable<Artist[]> {
+    return this.getSongs().pipe(
+      map((songResults: SongSearchResult[]) => {
+        const artistMap = new Map<string, Artist>();
+        songResults.forEach(songResult => {
+          if (!artistMap.has(songResult.artistId)) {
+            artistMap.set(songResult.artistId, {
+              _id: songResult.artistId,
+              name: songResult.artistName,
+              albums: []
+            });
+          }
+      
+          const artist = artistMap.get(songResult.artistId);
+          if (artist) {
+            const albumExists = artist.albums.some(album => album._id === songResult.albumId);
+      
+            if (!albumExists) {
+              artist.albums.push({
+                _id: songResult.albumId,
+                title: songResult.albumName,
+                description: '',
+                songs: []
+              });
+            }
+          }
+        });
+      
+        return Array.from(artistMap.values());
+      }));
   }
 
   addSong(artistId: string, albumId: string, song: Song): Observable<Song> {

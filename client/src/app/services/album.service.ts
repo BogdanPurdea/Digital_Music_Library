@@ -5,6 +5,7 @@ import { Album } from '../models/album';
 import { Observable, catchError, from, map, mergeMap, throwError } from 'rxjs';
 import { ArtistService } from './artist.service';
 import { AlbumSearchResult } from '../models/albumSearchResult';
+import { Artist } from '../models/artist';
 
 @Injectable({
   providedIn: 'root'
@@ -60,6 +61,24 @@ export class AlbumService {
 
   getAlbumSearchResultByAlbumId(albumSearchResults: AlbumSearchResult[], albumId: string): AlbumSearchResult | undefined {
     return albumSearchResults.find(result => result.album._id === albumId);
+  }
+
+  getArtistsFromAlbums(): Observable<Artist[]> {
+    return this.getAlbums().pipe(
+      map((albumResults: AlbumSearchResult[]) => {
+        const artistMap = new Map<string, Artist>();
+        albumResults.forEach(albumResult => {
+          if (!artistMap.has(albumResult.artistId)) {
+            artistMap.set(albumResult.artistId, {
+              _id: albumResult.artistId, 
+              name: albumResult.artistName, 
+              albums: []
+            });
+          }
+        });
+        return Array.from(artistMap.values());
+      })
+    );
   }
 
   addAlbum(artistId: string, album: Album): Observable<Album> {

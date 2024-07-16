@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatInputModule } from '@angular/material/input';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [],
@@ -23,7 +24,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ReactiveFormsModule,
     MatAutocompleteModule, 
     MatFormFieldModule, 
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatSelectModule
   ],
   exports: [
     CommonModule, 
@@ -36,7 +38,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ReactiveFormsModule,
     MatAutocompleteModule, 
     MatFormFieldModule, 
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatSelectModule
   ]
 })
 export class SharedModule { }

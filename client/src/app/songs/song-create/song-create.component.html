@@ -1,8 +1,28 @@
 <form class="form-group" [formGroup]="songForm" (ngSubmit)="onSubmit()">
     <div>
+        @if (artistId === null && albumId === null) {
+        <mat-form-field>
+            <mat-select placeholder="Select artist/band" formControlName="selectedArtist" (selectionChange)="onSelect($event.value)" required>
+                @for (artist of artists; track artist._id) {
+                <mat-option [value]="artist._id">
+                    {{ artist.name }}
+                </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-select placeholder="Select album" formControlName="selectedAlbum" required>
+                @for (album of albums; track album._id) {
+                <mat-option [value]="album._id">
+                    {{ album.title }}
+                </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        }
         <mat-form-field>
             <input matInput placeholder="Title" id="title" formControlName="title">
-        </mat-form-field> 
+        </mat-form-field>
         <!-- @if (songForm.get('title')!.invalid && (songForm.get('title')!.dirty || songForm.get('title')!.touched)){
         <p>
             Title is required.

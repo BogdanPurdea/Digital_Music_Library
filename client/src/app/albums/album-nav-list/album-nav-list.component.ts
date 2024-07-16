@@ -14,11 +14,13 @@ import { ArtistService } from '../../services/artist.service';
 import { FormControl } from '@angular/forms';
 import { SearchService } from '../../services/search.service';
 import { AlbumSearchResult } from '../../models/albumSearchResult';
+import { AlbumCreateComponent } from '../album-create/album-create.component';
 
 @Component({
   selector: 'app-album-nav-list',
   standalone: true,
-  imports: [SharedModule, SongListComponent, SongCreateComponent, AlbumUpdateComponent, ConfirmDialogComponent],
+  imports: [SharedModule, SongListComponent, SongCreateComponent, AlbumUpdateComponent, ConfirmDialogComponent,
+    AlbumCreateComponent],
   templateUrl: './album-nav-list.component.html',
   styleUrl: './album-nav-list.component.css'
 })
@@ -28,6 +30,7 @@ export class AlbumNavListComponent implements OnInit, OnChanges, OnDestroy {
   searchControl = new FormControl();
   selectedAlbumId: string | null = null;
   submittedSubscription!: Subscription;
+  showCreateAlbumForm = false;
   showCreateForm = false;
   showUpdateForm = false;
 
@@ -51,6 +54,10 @@ export class AlbumNavListComponent implements OnInit, OnChanges, OnDestroy {
     if (this.submittedSubscription) {
       this.submittedSubscription.unsubscribe();
     }
+  }
+
+  toggleCreateAlbumForm() {
+    this.showCreateAlbumForm = !this.showCreateAlbumForm;
   }
 
   toggleCreateForm() {

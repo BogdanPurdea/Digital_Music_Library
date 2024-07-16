@@ -1,3 +1,9 @@
+<mat-slide-toggle class="toggle-song-create" [checked]="showCreateSongForm" (change)="toggleCreateSongForm()">
+    Add song
+</mat-slide-toggle>
+@if (showCreateSongForm) {
+    <app-song-create></app-song-create>
+}
 <input [formControl]="searchControl" placeholder="Search for songs" [matAutocomplete]="auto">
 <mat-autocomplete #auto="matAutocomplete">
     @for (song of songs; track song.song._id) {

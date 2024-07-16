@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { Song } from '../../models/song';
 import { Album } from '../../models/album';
 import { SongService } from '../../services/song.service';
@@ -15,11 +15,11 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-song-list',
   standalone: true,
-  imports: [SharedModule, SongCreateComponent, SongUpdateComponent, ConfirmDialogComponent],
+  imports: [SharedModule, SongUpdateComponent, ConfirmDialogComponent],
   templateUrl: './song-list.component.html',
   styleUrl: './song-list.component.css'
 })
-export class SongListComponent implements OnInit, OnChanges {
+export class SongListComponent implements OnInit, OnChanges, OnDestroy {
   songs: Song[] = [];
   @Input() artistId: string | null = null;
   @Input() albumId: string | null = null;
@@ -36,9 +36,14 @@ export class SongListComponent implements OnInit, OnChanges {
     });
   }
 
-
   ngOnChanges(): void {
     this.loadSongs();
+  }
+
+  ngOnDestroy(): void {
+    if (this.submittedSubscription) {
+      this.submittedSubscription.unsubscribe();
+    }
   }
 
   toggleUpdateForm() {

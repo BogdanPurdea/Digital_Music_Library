@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { Song } from '../../models/song';
 import { SongService } from '../../services/song.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,14 +16,16 @@ import { SongSearchResult } from '../../models/songSearchResults';
 @Component({
   selector: 'app-song-nav-list',
   standalone: true,
-  imports: [SharedModule, SongCreateComponent, SongUpdateComponent, ConfirmDialogComponent],
+  imports: [SharedModule, SongCreateComponent, SongUpdateComponent, 
+    ConfirmDialogComponent],
   templateUrl: './song-nav-list.component.html',
   styleUrl: './song-nav-list.component.css'
 })
-export class SongNavListComponent {
+export class SongNavListComponent implements OnInit, OnChanges, OnDestroy{
 
   songs: SongSearchResult[] = [];
   searchControl = new FormControl();
+  showCreateSongForm = false;
   showUpdateForm = false;
   submittedSubscription!: Subscription;
   selectedSongId: string | null = null;
@@ -39,9 +41,18 @@ export class SongNavListComponent {
     });
   }
 
-
   ngOnChanges(): void {
     this.loadAllSongs();
+  }
+
+  ngOnDestroy(): void {
+    if (this.submittedSubscription) {
+      this.submittedSubscription.unsubscribe();
+    }
+  }
+
+  toggleCreateSongForm() {
+    this.showCreateSongForm = !this.showCreateSongForm;
   }
 
   toggleUpdateForm() {

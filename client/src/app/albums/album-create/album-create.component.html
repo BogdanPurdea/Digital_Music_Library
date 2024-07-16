@@ -1,5 +1,16 @@
 <form class="form-group" [formGroup]="albumForm" (ngSubmit)="onSubmit()">
     <div>
+        @if (artistId === null) {
+        <mat-form-field>
+            <mat-select placeholder="Select artist/band" formControlName="selectedArtist" required>
+                @for (artist of artists; track artist._id) {
+                    <mat-option [value]="artist._id">
+                        {{ artist.name }}
+                    </mat-option>
+                    }
+            </mat-select>
+          </mat-form-field>
+        }
         <mat-form-field>
             <input matInput placeholder="Title" id="title" formControlName="title" required>
         </mat-form-field>
