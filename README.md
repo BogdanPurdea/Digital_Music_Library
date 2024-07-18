@@ -73,7 +73,7 @@ To configure the database connection, you need to create a `dbConfig.json` file 
 
 - `username`: The username for the database connection.
 - `password`: The password for the database connection.
-- `database`: The name of the database you wish to connect to.
+- `database`: The MongoDB connection string and name of the database you wish to connect to.
 
 Then run this command to import the data:
 
