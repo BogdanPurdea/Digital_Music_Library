@@ -63,11 +63,20 @@ The Digital Music Library is a web application designed to visualize and manage 
    npm install
    ```
 ### Configure dbConfig.json and import data from data.json file 
-   To configure the database connection, you need to create a dbConfig.json file in the api/data directory. This file should contain the following properties:
-      -username: The username for the database connection.
-      -password: The password for the database connection.
-      -database: The name of the database you wish to connect to.
-   Then run this command to import the data:
+   Sure, here is the content converted to Markdown format:
+
+---
+
+## Database Configuration
+
+To configure the database connection, you need to create a `dbConfig.json` file in the `api/data` directory. This file should contain the following properties:
+
+- `username`: The username for the database connection.
+- `password`: The password for the database connection.
+- `database`: The name of the database you wish to connect to.
+
+Then run this command to import the data:
+
    ```bash
    cd api
    node data/importData.js
