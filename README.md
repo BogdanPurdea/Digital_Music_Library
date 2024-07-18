@@ -62,6 +62,11 @@ The Digital Music Library is a web application designed to visualize and manage 
    cd client
    npm install
    ```
+### Import data from data.json file 
+   ```bash
+   cd api
+   node data/importData.js
+   ```
 
 ### Running the Application
 
