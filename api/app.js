@@ -4,6 +4,8 @@ var cors = require('cors');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mime = require('mime-types');
+
 var dbConnection = require('./data/dbConnection');
 
 var indexRouter = require('./routes/index');
@@ -24,12 +26,25 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../app/public/client/browser'), {
+  setHeaders: (res, filePath) => {
+    const mimeType = mime.lookup(filePath);
+    console.log(mimeType);
+    if (mimeType) {
+      res.setHeader('Content-Type', mimeType)
+    }
+  }
+}));
 
 dbConnection.connectToDatabase();
 
-app.use('/', indexRouter);
+//app.use('/', indexRouter);
 app.use('/api', apiRouter);
+
+// Handle other routes and return the Angular index file
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/client/browser', 'index.html'));
+});
 app.use(errorHandler);
 
 // // catch 404 and forward to error handler

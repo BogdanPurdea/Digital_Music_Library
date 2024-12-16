@@ -32,7 +32,7 @@ export class AlbumService {
         return from([results]);
       }),
       catchError(error => {
-        console.error('Error loading albums from GetAlbums', error);
+        console.error('Error loading albums from getAlbums', error);
         return throwError('Error loading albums');
       })
     );
